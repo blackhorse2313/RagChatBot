@@ -3,23 +3,26 @@ import { Link } from "react-router-dom";
 
 const Blog = ({ blog }) => {
   return (
-    <div className="max-w-md mx-auto bg-white rounded-xl border overflow-hidden w-full md:w-108 md:max-w-none h-auto">
-      <div className="md:flex flex-col h-full p-8">
-        <div>
-          <div className="uppercase tracking-wide text-md text-indigo-700 font-semibold">
+    <div className="max-w-md mx-10 my-5 bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="p-6 flex flex-col h-full">
+        <h2 className="mt-2 mb-2 font-bold text-2xl">
+          <Link
+            to={`/blog/${blog.id}`}
+            className="text-gray-700 hover:text-gray-600"
+          >
             {blog.title}
-          </div>
-          <div className="flex-grow">
-            <p className="mt-2 text-gray-500">
-              {blog.content?.substring(0, 300) + "..."}
-            </p>
-          </div>
-        </div>
-        <div className="mt-auto pt-2">
-          <Link to={`/blog/${blog.id}`}>
-            <button className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-700 hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Details
-            </button>
+          </Link>
+        </h2>
+        <p className="text-gray-700 flex-grow">
+          {blog.content?.substring(0, 100) + "..."}
+        </p>
+        <div className="mt-3">
+          <Link
+            to={`/blog/${blog.id}`}
+            aria-label="read more"
+            className="text-indigo-500 hover:text-indigo-600 font-semibold"
+          >
+            Read more
           </Link>
         </div>
       </div>

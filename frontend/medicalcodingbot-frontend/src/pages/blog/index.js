@@ -8,7 +8,7 @@ const BlogList = () => {
   const blogs = BlogContents;
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 p-5" id="qa_box">
+    <div className="flex flex-wrap justify-center p-5" id="qa_box">
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}

@@ -16,9 +16,6 @@ const BlogDetail = () => {
         </button>
       </Link>
       <div className="lg:text-center">
-        <h2 className="text-base text-indigo-700 font-semibold tracking-wide uppercase">
-          Welcome to our Blog
-        </h2>
         <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
           {blog?.title}
         </p>

@@ -19,7 +19,9 @@ const TableWithPagination = () => {
 
   useEffect(() => {
     axios
-      .post(`http://localhost:8080/firstquery10180`, { page: currentPage })
+      .post(`https://medicalcodingbot.com/api/firstquery10180`, {
+        page: currentPage,
+      })
       .then((response) => {
         setData(response.data.first_query);
         setPages(Math.ceil(response.data.count / dataLimit));

@@ -7,7 +7,7 @@ from src.models import Message, FirstQuery
 from src.services.chatbot import get_answer
 
 # set router
-router = APIRouter()
+router = APIRouter(prefix="/api", tags=["api"])
 
 
 def get_db():

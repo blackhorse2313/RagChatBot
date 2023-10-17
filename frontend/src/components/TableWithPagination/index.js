@@ -26,10 +26,6 @@ const TableWithPagination = () => {
       });
   }, [currentPage]);
 
-  useEffect(() => {
-    setCurrentPage(currentPage);
-  }, [data]);
-
   function goNext() {
     setCurrentPage((page) => Math.min(page + 1, pages));
   }

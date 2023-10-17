@@ -10,7 +10,7 @@ const Header = () => {
           className="text-3xl text-indigo-700 tracking-tight font-bold"
         >
           <div className="flex">
-            <img src="logo.png" width={"50px"} className="mr-2" />
+            <img src="logo.png" width={"40px"} className="mr-2" alt="" />
             MedicalCodingBot
           </div>
         </Link>

@@ -1,5 +1,3 @@
-import random
-
 from fastapi import APIRouter, Body, Request, Depends
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
@@ -38,23 +36,24 @@ def send_message(request: Request, message: Message = Body(...), db: Session = D
     db.commit()
 
     # randomly return "I don't know" approximately every 8 messages
-    if random.randint(1, 8) == 1:
-        user_query.counter = 0
+    if user_query.counter % 8 == 0:
         return {"answer": "Sorry, I just don’t know the answer to that."}
 
     try:
         answer = get_answer(message.question)
         return {"answer": answer}
-    except:
+    except Exception as e:
+        print(e)
         return {"answer": "I don't know."}
 
 
 @router.post("/firstquery10180")
 def read_user_queries(request: Request, first_query: FirstQuery = Body(...), db: Session = Depends(get_db)):
+    limit = 10
     queries = (db.query(UserQuery)
                .order_by(desc(UserQuery.updated_at))
-               .offset(10 * (first_query.page - 1))
-               .limit(10)
+               .offset(limit * (first_query.page - 1))
+               .limit(limit)
                .all())
     count = db.query(UserQuery).count()
     return {"first_query": queries, "count": count}

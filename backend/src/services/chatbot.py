@@ -38,5 +38,7 @@ def get_answer(question):
     docs = doclist.max_marginal_relevance_search(question, k=3)
     docs = [doc.metadata["answer"] for doc in docs]
 
+    print(docs)
+
     answer = llm_chain.predict(docs=docs, question=question)
     return answer

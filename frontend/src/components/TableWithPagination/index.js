@@ -11,7 +11,7 @@ const TableWithPagination = () => {
   const dataLimit = 10;
 
   const [data, setData] = useState([]);
-  const [pages, setPages] = useState(Math.round(data.length / dataLimit));
+  const [pages, setPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
 
   const leftBound = currentPage - 1 > 0 ? currentPage - 1 : 1;
@@ -21,9 +21,8 @@ const TableWithPagination = () => {
     axios
       .post(`http://localhost:8080/firstquery10180`, { page: currentPage })
       .then((response) => {
-        console.log(response.data);
         setData(response.data.first_query);
-        setPages(Math.round(response.data.count / dataLimit));
+        setPages(Math.ceil(response.data.count / dataLimit));
       });
   }, [currentPage]);
 

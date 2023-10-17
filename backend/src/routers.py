@@ -1,13 +1,12 @@
 import random
-import uuid
 
 from fastapi import APIRouter, Body, Request, Depends
+from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from src.database import SessionLocal, UserQuery
 from src.models import Message, FirstQuery
 from src.services.chatbot import get_answer
-from sqlalchemy import desc
 
 # set router
 router = APIRouter()
@@ -43,8 +42,11 @@ def send_message(request: Request, message: Message = Body(...), db: Session = D
         user_query.counter = 0
         return {"answer": "Sorry, I just don’t know the answer to that."}
 
-    answer = get_answer(message.question)
-    return {"answer": answer}
+    try:
+        answer = get_answer(message.question)
+        return {"answer": answer}
+    except:
+        return {"answer": "I don't know."}
 
 
 @router.post("/firstquery10180")

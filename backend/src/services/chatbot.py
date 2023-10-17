@@ -35,7 +35,7 @@ def get_answer(question):
 
     llm_chain = LLMChain(prompt=prompt, llm=llm)
 
-    docs = doclist.max_marginal_relevance_search(question, k=1)
+    docs = doclist.max_marginal_relevance_search(question, k=3)
     docs = [doc.metadata["answer"] for doc in docs]
 
     answer = llm_chain.predict(docs=docs, question=question)

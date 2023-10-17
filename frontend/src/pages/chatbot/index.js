@@ -30,7 +30,7 @@ const Chatbot = () => {
     setIsLoading(true);
     axios
       .post(
-        "http://159.223.198.21:8080/api/send",
+        "http://127.0.0.1:8080/api/send",
         { question: question },
         {
           headers: {

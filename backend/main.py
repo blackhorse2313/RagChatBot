@@ -15,6 +15,7 @@ origins = [
 
 app.add_middleware(SessionMiddleware, secret_key="YOUR-SECRET-KEY")
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

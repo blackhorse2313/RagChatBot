@@ -30,7 +30,7 @@ const Chatbot = () => {
     setIsLoading(true);
     axios
       .post(
-        "https://www.medicalcodingbot.com/api/send",
+        process.env.REACT_APP_SERVER_URL + "api/send",
         { question: question },
         {
           headers: {

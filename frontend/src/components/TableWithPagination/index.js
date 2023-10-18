@@ -19,7 +19,7 @@ const TableWithPagination = () => {
 
   useEffect(() => {
     axios
-      .post("http://127.0.0.1:8080/api/firstquery10180", {
+      .post("https://www.medicalcodingbot.com/api/firstquery10180", {
         page: currentPage,
       })
       .then((response) => {

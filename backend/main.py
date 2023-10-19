@@ -5,7 +5,6 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from routes.api import router
 from src.database import Base, engine
-from src.services.embedding import delete_embedding, add_embedding
 
 # init FastAPI app
 app = FastAPI()
@@ -14,7 +13,7 @@ origins = [
     "*"
 ]
 
-app.add_middleware(SessionMiddleware, secret_key="YOUR-SECRET-KEY")
+app.add_middleware(SessionMiddleware, secret_key="medical_coding_bot")
 
 app.add_middleware(
     CORSMiddleware,

@@ -10,6 +10,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([]);
   const endOfChat = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isChat, setIsChat] = useState(false);
 
   const scrollToBottom = () => {
     endOfChat.current?.scrollIntoView({ behavior: "smooth" });
@@ -28,6 +29,7 @@ const Chatbot = () => {
 
   const botReply = (question) => {
     setIsLoading(true);
+    setIsChat(true);
     axios
       .post(
         process.env.REACT_APP_SERVER_URL + "api/send",
@@ -64,7 +66,8 @@ const Chatbot = () => {
 
   const clickDefaultMessage = (event) => {
     event.preventDefault();
-    const defaultMsg = "What is the code for total knee replacement?";
+    const defaultMsg =
+      "Try, what is the code for revision total knee replacement";
     setMessages((prevMessages) => [
       ...prevMessages,
       { text: defaultMsg, sender: "user" },
@@ -126,30 +129,34 @@ const Chatbot = () => {
           )}
           <div ref={endOfChat}></div>
         </div>
-        <div className="flex items-end px-4 pt-2 mt-auto">
-          <div className="max-w-xs bg-gray-100 text-black text-sm font-medium py-2 px-4 rounded-ll-lg rounded-t mb-2">
-            <button onClick={clickDefaultMessage}>
-              What is the code for total knee replacement?
-            </button>
-          </div>
+        <div className="mt-auto">
+          {!isChat && (
+            <div className="flex items-end px-4 pt-2">
+              <div className="max-w-s bg-gray-100 text-black text-sm font-medium py-2 px-4 rounded-ll-lg rounded-t mb-2">
+                <button onClick={clickDefaultMessage}>
+                  Try, what is the code for revision total knee replacement?
+                </button>
+              </div>
+            </div>
+          )}
+          <form onSubmit={handleSubmit} className="px-4 pb-2">
+            <div className="flex items-center justify-between">
+              <input
+                type="text"
+                name="message"
+                className="flex-grow mr-4 appearance-none py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-lg border border-gray-500 focus:border-gray-700"
+                placeholder="Type your message..."
+                required
+              />
+              <button
+                type="submit"
+                className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-800 text-white text-sm py-2 px-4 rounded-full"
+              >
+                Send
+              </button>
+            </div>
+          </form>
         </div>
-        <form onSubmit={handleSubmit} className="px-4 pb-2">
-          <div className="flex items-center justify-between">
-            <input
-              type="text"
-              name="message"
-              className="flex-grow mr-4 appearance-none py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-lg border border-gray-500 focus:border-gray-700"
-              placeholder="Type your message..."
-              required
-            />
-            <button
-              type="submit"
-              className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-800 text-white text-sm py-2 px-4 rounded-full"
-            >
-              Send
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   );

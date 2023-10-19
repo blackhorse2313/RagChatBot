@@ -1,6 +1,7 @@
+from uuid import uuid4
+
 import pandas as pd
 import pinecone
-from uuid import uuid4
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Pinecone
 
@@ -17,6 +18,7 @@ pinecone.init(
 
 index = pinecone.Index(INDEX_NAME)
 
+
 def start_embedding():
     # read csv file
     df = pd.read_csv('data/train_data.csv', encoding='utf-8-sig')
@@ -27,7 +29,8 @@ def start_embedding():
         questions, embeddings, metadatas=[{"answer": answer} for answer in answers],
         index_name=INDEX_NAME)
 
-def add_embedding(question:str, answer: str):
+
+def add_embedding(question: str, answer: str):
     embed_question = embeddings.embed_query(question)
     id = str(uuid4())
     print(id)

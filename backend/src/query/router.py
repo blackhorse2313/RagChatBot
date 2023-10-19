@@ -2,12 +2,13 @@ from fastapi import APIRouter, Body, Request, Depends
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
-from src.database import SessionLocal, UserQuery
+from src.database import SessionLocal
 from src.models import Message, FirstQuery
-from src.services.chatbot import get_answer
+from src.query.models import UserQuery
+from src.query.services.chatbot import get_answer
 
 # set router
-router = APIRouter(prefix="/api", tags=["api"])
+router = APIRouter(prefix="/query", tags=["query"])
 
 
 def get_db():

@@ -47,8 +47,8 @@ const BlogTable = () => {
   };
 
   const closeDeleteModal = () => {
-    setDeleteModalOpen(false);
     setCurrentBlog(null);
+    setDeleteModalOpen(false);
   };
 
   const handleCreateEdit = async (blog) => {

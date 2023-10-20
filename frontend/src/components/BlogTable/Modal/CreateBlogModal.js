@@ -5,10 +5,11 @@ const CreateBlogModal = ({ isOpen, onSubmit, onClose, blog }) => {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    console.log(blog);
     if (blog) {
       setTitle(blog.title);
       setContent(blog.content);
+    } else {
+      removeContent();
     }
   }, [blog]);
 

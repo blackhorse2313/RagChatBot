@@ -130,15 +130,6 @@ const Chatbot = () => {
           <div ref={endOfChat}></div>
         </div>
         <div className="mt-auto">
-          {!isChat && (
-            <div className="flex items-end px-4 pt-2">
-              <div className="max-w-s bg-gray-100 text-black text-sm font-medium py-2 px-4 rounded-ll-lg rounded-t mb-2">
-                <button onClick={clickDefaultMessage} className="text-left">
-                  Try, what is the code for revision total knee replacement?
-                </button>
-              </div>
-            </div>
-          )}
           <form onSubmit={handleSubmit} className="px-4 pb-2">
             <div className="flex items-center justify-between">
               <input

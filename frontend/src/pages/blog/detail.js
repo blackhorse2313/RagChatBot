@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import BlogContent from "../../utils/blogcontent";
+import axios from "axios";
 
 const BlogDetail = () => {
   let { id } = useParams();
+  const [blog, setBlog] = useState();
 
-  const blog = BlogContent[id];
-  const formattedContent = blog.content.replace(/\n/g, "<br />");
+  useEffect(() => {
+    fetchBlog();
+  }, []);
+
+  const fetchBlog = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/blogs/${id}`
+      );
+      console.log(response.data);
+      setBlog(response.data);
+    } catch (error) {
+      console.error("Error fetching blogs", error);
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -22,7 +36,11 @@ const BlogDetail = () => {
       </div>
       <div className="mt-10">
         <div className="mt-6 prose prose-indigo prose-lg max-w-none text-gray-500">
-          <div dangerouslySetInnerHTML={{ __html: formattedContent }} />
+          <div
+            dangerouslySetInnerHTML={{
+              __html: blog?.content.replace(/\n/g, "<br />"),
+            }}
+          />
         </div>
       </div>
     </div>

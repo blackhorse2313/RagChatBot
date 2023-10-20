@@ -14,12 +14,15 @@ const Header = () => {
       <div className="container mx-auto flex justify-between items-center font-semibold">
         <Link to="/" className="flex items-center">
           <img src="logo.png" width={"40px"} className="mr-2" alt="" />
-          <span className="text-3xl text-indigo-700 tracking-tight font-bold hidden md:block">
+          <span className="md:text-3xl text-indigo-700 tracking-tight font-bold text-xl">
             MedicalCodingBot
           </span>
         </Link>
         <div className="relative md:hidden">
-          <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
+          <button
+            className="md:hidden my-auto"
+            onClick={() => setIsOpen(!isOpen)}
+          >
             <FaBars />
           </button>
           {isOpen && (

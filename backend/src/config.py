@@ -9,3 +9,5 @@ PINECONE_KEY = config["PINECONE_KEY"]
 PINECONE_ENV = config["PINECONE_ENV"]
 
 INDEX_NAME = "meditermbot-index"
+
+DEFAULT_MESSAGE = "Try, what is the code for revision total knee replacement"

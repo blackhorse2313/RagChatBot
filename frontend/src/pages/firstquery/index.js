@@ -3,7 +3,7 @@ import TableWithPagination from "../../components/TableWithPagination";
 
 const FirstQuery = () => {
   return (
-    <div className="w-2/3 mx-auto">
+    <div className="md:w-2/3 md:mx-auto w-full px-3">
       <TableWithPagination />
     </div>
   );

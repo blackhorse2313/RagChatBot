@@ -3,7 +3,7 @@ import BlogTable from "../../components/BlogTable";
 
 const ManageBlog = () => {
   return (
-    <div className="w-2/3 mx-auto">
+    <div className="w-full px-5 md:mx-auto md:w-2/3">
       <BlogTable />
     </div>
   );

@@ -1,68 +1,131 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  FiChevronsLeft,
-  FiChevronsRight,
-  FiChevronRight,
-  FiChevronLeft,
-} from "react-icons/fi";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import CreateBlogModal from "./Modal/CreateBlogModal";
+import DeleteBlogModal from "./Modal/DeleteBlogModal";
+
+import { notification } from "antd";
 
 const BlogTable = () => {
-  const dataLimit = 10;
-
   const [data, setData] = useState([]);
-  const [pages, setPages] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentBlog, setCurrentBlog] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
-  const leftBound = currentPage - 1 > 0 ? currentPage - 1 : 1;
-  const rightBound = currentPage + 1 <= pages ? currentPage + 1 : pages;
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
-    axios
-      .post(process.env.REACT_APP_SERVER_URL + "api/firstquery10180", {
-        page: currentPage,
-      })
-      .then((response) => {
-        setData(response.data.first_query);
-        setPages(Math.ceil(response.data.count / dataLimit));
+    fetchBlogs();
+  }, []);
+
+  const fetchBlogs = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/blogs/`
+      );
+      setData(response.data);
+    } catch (error) {
+      console.error("Error fetching blogs", error);
+    }
+  };
+
+  const openModal = (blog = null) => {
+    setIsEdit(!!blog);
+    setCurrentBlog(blog);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setCurrentBlog(null);
+  };
+
+  const openDeleteModal = (blog) => {
+    setCurrentBlog(blog);
+    setDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteModalOpen(false);
+    setCurrentBlog(null);
+  };
+
+  const handleCreateEdit = async (blog) => {
+    if (blog.title == "" || blog.content == "") {
+      closeModal();
+      api.error({
+        message: "Please input title and content.",
       });
-  }, [currentPage]);
+      return;
+    }
+    try {
+      if (isEdit) {
+        await axios.put(
+          `${process.env.REACT_APP_SERVER_URL}/blogs/${currentBlog.id}`,
+          blog
+        );
+      } else {
+        await axios.post(`${process.env.REACT_APP_SERVER_URL}/blogs`, blog);
+      }
+      fetchBlogs();
+      closeModal();
+      api.success({
+        message: "Success",
+      });
+    } catch (error) {
+      api.error({
+        message: "Error creating/updating blog.",
+      });
+      console.error("Error creating/updating blog", error);
+    }
+  };
 
-  function goNext() {
-    setCurrentPage((page) => Math.min(page + 1, pages));
-  }
-
-  function goPrev() {
-    setCurrentPage((page) => Math.max(page - 1, 1));
-  }
-
-  function goToFirst() {
-    setCurrentPage(1);
-  }
-
-  function goToLast() {
-    setCurrentPage(pages);
-  }
-
-  function changePage(event) {
-    const pageNumber = Number(event.target.textContent);
-    setCurrentPage(pageNumber);
-  }
+  const handleDelete = async (isDelete) => {
+    if (!isDelete) {
+      closeDeleteModal();
+      return;
+    }
+    try {
+      await axios.delete(
+        `${process.env.REACT_APP_SERVER_URL}/blogs/${currentBlog.id}`
+      );
+      fetchBlogs();
+      closeDeleteModal();
+      api.success({
+        message: "Success deleting blog.",
+      });
+    } catch (error) {
+      api.error({
+        message: "Error deleting blog.",
+      });
+      console.error("Error deleting blog", error);
+    }
+  };
 
   return (
     <div className="w-full">
-      <div className="bg-white shadow-md rounded my-6">
+      {contextHolder}
+      <button
+        className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mt-10"
+        onClick={() => openModal()}
+      >
+        Create Blog
+      </button>
+      <div className="bg-white shadow-md rounded my-2">
         <table className="w-full table-fixed">
           <thead>
             <tr className="bg-indigo-600 text-white text-sm leading-normal">
               <th className="py-3 px-6 text-left">Title</th>
-              <th className="py-3 px-6 text-left w-48">Date</th>
+              <th className="py-3 px-6 text-left w-36">Action</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
             {data.length === 0 ? (
               <tr>
-                <td className="py-3 px-6 text-left">No data</td>
+                <td className="py-3 px-6 text-left" colSpan={2}>
+                  No data
+                </td>
               </tr>
             ) : (
               data.map((item, index) => (
@@ -72,16 +135,23 @@ const BlogTable = () => {
                 >
                   <td className="py-3 px-6 text-left">
                     <div className="flex items-center whitespace-break-spaces">
-                      <div className="font-medium">{item.query}</div>
+                      <div className="font-medium">{item.title}</div>
                     </div>
                   </td>
                   <td className="py-3 px-6 text-left">
                     <div className="flex items-center whitespace-break-spaces">
-                      <div className="font-medium">
-                        {item.updated_at.substring(0, 10) +
-                          " " +
-                          item.updated_at.substring(11, 19)}
-                      </div>
+                      <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+                        onClick={() => openModal(item)}
+                      >
+                        <FiEdit2 />
+                      </button>
+                      <button
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        onClick={() => openDeleteModal(item)}
+                      >
+                        <FiTrash2 />
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -89,52 +159,14 @@ const BlogTable = () => {
             )}
           </tbody>
         </table>
-        <div className="flex items-center justify-center p-4">
-          <button
-            onClick={goToFirst}
-            disabled={currentPage === 1}
-            className="text-gray-900 px-2 py-2 rounded-md"
-          >
-            <FiChevronsLeft />
-          </button>
-          <button
-            onClick={goPrev}
-            disabled={currentPage === 1}
-            className="text-gray-900 px-2 py-2 rounded-md"
-          >
-            <FiChevronLeft />
-          </button>
-          {[...Array(pages).keys()]
-            .slice(leftBound - 1, rightBound)
-            .map((item, index) => (
-              <button
-                key={index}
-                onClick={changePage}
-                className={`text-gray-900 px-3 py-1 rounded-md mx-1 ${
-                  currentPage === item + 1
-                    ? "border border-indigo-700 text-indigo-700"
-                    : null
-                }`}
-              >
-                <span>{item + 1}</span>
-              </button>
-            ))}
-          <button
-            onClick={goNext}
-            disabled={currentPage === pages}
-            className="text-gray-900 px-2 py-2 rounded-md"
-          >
-            <FiChevronRight />
-          </button>
-          <button
-            onClick={goToLast}
-            disabled={currentPage === pages}
-            className="text-gray-900 px-2 py-2 rounded-md"
-          >
-            <FiChevronsRight />
-          </button>
-        </div>
       </div>
+      <CreateBlogModal
+        isOpen={modalOpen}
+        onSubmit={handleCreateEdit}
+        onClose={closeModal}
+        blog={currentBlog}
+      />
+      <DeleteBlogModal isOpen={deleteModalOpen} onClose={handleDelete} />
     </div>
   );
 };

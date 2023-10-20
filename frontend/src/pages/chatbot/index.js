@@ -32,7 +32,7 @@ const Chatbot = () => {
     setIsChat(true);
     axios
       .post(
-        process.env.REACT_APP_SERVER_URL + "api/send",
+        `${process.env.REACT_APP_SERVER_URL}/query/send`,
         { question: question },
         {
           headers: {
@@ -133,7 +133,7 @@ const Chatbot = () => {
           {!isChat && (
             <div className="flex items-end px-4 pt-2">
               <div className="max-w-s bg-gray-100 text-black text-sm font-medium py-2 px-4 rounded-ll-lg rounded-t mb-2">
-                <button onClick={clickDefaultMessage}>
+                <button onClick={clickDefaultMessage} className="text-left">
                   Try, what is the code for revision total knee replacement?
                 </button>
               </div>

@@ -19,7 +19,7 @@ const TableWithPagination = () => {
 
   useEffect(() => {
     axios
-      .post(process.env.REACT_APP_SERVER_URL + "api/firstquery10180", {
+      .post(`${process.env.REACT_APP_SERVER_URL}/query/firstquery10180`, {
         page: currentPage,
       })
       .then((response) => {
@@ -56,7 +56,7 @@ const TableWithPagination = () => {
           <thead>
             <tr className="bg-indigo-600 text-white text-sm leading-normal">
               <th className="py-3 px-6 text-left">First Query</th>
-              <th className="py-3 px-6 text-left w-48">Date</th>
+              <th className="py-3 px-6 text-left w-24 md:w-48">Date</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">

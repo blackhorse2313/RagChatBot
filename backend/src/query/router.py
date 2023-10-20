@@ -6,6 +6,7 @@ from src.database import SessionLocal
 from src.models import Message, FirstQuery
 from src.query.models import UserQuery
 from src.query.services.chatbot import get_answer
+from src.config import DEFAULT_MESSAGE
 
 # set router
 router = APIRouter(prefix="/query", tags=["query"])
@@ -26,7 +27,7 @@ def send_message(request: Request, message: Message = Body(...), db: Session = D
     # check if this is the user's first query
     user_query = db.query(UserQuery).filter(UserQuery.device_id == device_id).first()
 
-    if user_query is None:
+    if user_query is None and message.question != DEFAULT_MESSAGE:
         # this is the user's first query, save it
         user_query = UserQuery(query=message.question, device_id=device_id)
         db.add(user_query)

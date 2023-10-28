@@ -136,7 +136,7 @@ const Chatbot = () => {
                 type="text"
                 name="message"
                 className="flex-grow mr-4 appearance-none py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-lg border border-gray-500 focus:border-gray-700"
-                placeholder="Type your message..."
+                placeholder="Try what’s the code for revision total knee replacement?"
                 required
               />
               <button

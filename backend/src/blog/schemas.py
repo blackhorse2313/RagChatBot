@@ -6,6 +6,7 @@ from pydantic import BaseModel
 # Pydantic models
 class BlogBase(BaseModel):
     title: str
+    url: str
     content: str
 
 

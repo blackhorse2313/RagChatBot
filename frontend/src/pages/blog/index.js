@@ -17,6 +17,10 @@ const BlogList = () => {
         `${process.env.REACT_APP_SERVER_URL}/blogs/`
       );
       setBlogs(response.data);
+      blogs.forEach((blog) => {
+        blog["url"] = blog.title.replace(" ", "-");
+      });
+      console.log(blogs);
     } catch (error) {
       console.error("Error fetching blogs", error);
     }

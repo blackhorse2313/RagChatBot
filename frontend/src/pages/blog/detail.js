@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
 const BlogDetail = () => {
-  let { id } = useParams();
+  let { url } = useParams();
   const [blog, setBlog] = useState();
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const BlogDetail = () => {
   const fetchBlog = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/blogs/${id}`
+        `${process.env.REACT_APP_SERVER_URL}/blogs/${url}`
       );
       console.log(response.data);
       setBlog(response.data);

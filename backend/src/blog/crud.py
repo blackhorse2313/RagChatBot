@@ -5,8 +5,8 @@ from sqlalchemy.orm import Session
 from src.blog import models, schemas
 
 
-def get_blog(db: Session, blog_id: int):
-    return db.query(models.Blog).filter(models.Blog.id == blog_id).first()
+def get_blog(db: Session, blog_url: str):
+    return db.query(models.Blog).filter(models.Blog.url == blog_url).first()
 
 
 def get_blogs(db: Session, skip: int = 0, limit: int = 100):
@@ -14,7 +14,7 @@ def get_blogs(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_blog(db: Session, blog: schemas.BlogCreate):
-    db_blog = models.Blog(title=blog.title, content=blog.content)
+    db_blog = models.Blog(title=blog.title, content=blog.content, url=blog.url)
     db.add(db_blog)
     db.commit()
     db.refresh(db_blog)
@@ -31,6 +31,7 @@ def delete_blog(db: Session, blog_id: int):
 def update_blog(db: Session, blog_id: int, blog: schemas.BlogUpdate):
     db_blog = db.query(models.Blog).filter(models.Blog.id == blog_id).first()
     db_blog.title = blog.title
+    db_blog.url = blog.url
     db_blog.content = blog.content
     db_blog.updated_at = datetime.now()
     db.commit()

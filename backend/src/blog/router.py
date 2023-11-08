@@ -27,9 +27,9 @@ def read_blogs(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return blogs
 
 
-@router.get("/{blog_id}", response_model=schemas.Blog)
-def read_blog(blog_id: int, db: Session = Depends(get_db)):
-    db_blog = crud.get_blog(db, blog_id=blog_id)
+@router.get("/{blog_url}", response_model=schemas.Blog)
+def read_blog(blog_url: str, db: Session = Depends(get_db)):
+    db_blog = crud.get_blog(db, blog_url=blog_url)
     if db_blog is None:
         raise HTTPException(status_code=404, detail="Blog not found")
     return db_blog

@@ -52,7 +52,7 @@ const BlogTable = () => {
   };
 
   const handleCreateEdit = async (blog) => {
-    if (blog.title == "" || blog.content == "") {
+    if (blog.title == "" || blog.content == "" || blog.url == "") {
       closeModal();
       api.error({
         message: "Please input title and content.",

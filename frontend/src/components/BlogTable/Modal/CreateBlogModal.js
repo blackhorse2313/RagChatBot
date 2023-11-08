@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
+const modules = {
+  toolbar: [
+    ["image", "video"], // link and image, video
+  ],
+};
 
 const CreateBlogModal = ({ isOpen, onSubmit, onClose, blog }) => {
   const [title, setTitle] = useState("");
+  const [url, setUrl] = useState("");
   const [content, setContent] = useState("");
 
   useEffect(() => {
     if (blog) {
       setTitle(blog.title);
+      setUrl(blog.url);
       setContent(blog.content);
     } else {
       removeContent();
@@ -14,7 +24,7 @@ const CreateBlogModal = ({ isOpen, onSubmit, onClose, blog }) => {
   }, [blog]);
 
   const handleSubmit = () => {
-    onSubmit({ title, content });
+    onSubmit({ title, url, content });
     removeContent();
   };
 
@@ -25,6 +35,7 @@ const CreateBlogModal = ({ isOpen, onSubmit, onClose, blog }) => {
 
   const removeContent = () => {
     setTitle("");
+    setUrl("");
     setContent("");
   };
 
@@ -34,7 +45,7 @@ const CreateBlogModal = ({ isOpen, onSubmit, onClose, blog }) => {
 
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto flex items-center justify-center bg-gray-900/30 p-2">
-      <div className="bg-white rounded-lg shadow-md h-2/3 w-full md:w-1/2 m-2 flex flex-col">
+      <div className="bg-white rounded-lg shadow-md h-full md:h-3/4 w-full md:w-1/2 m-2 flex flex-col">
         <div className="bg-indigo-700 px-6 py-4 text-white rounded-t-lg flex justify-between items-center">
           <h3 className="text-lg leading-6 font-medium">Blog</h3>
           <button onClick={handleClose} className="text-white">
@@ -50,12 +61,22 @@ const CreateBlogModal = ({ isOpen, onSubmit, onClose, blog }) => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
-            <textarea
-              className="border mb-4 p-2 w-full rounded-lg flex-grow"
-              placeholder="Content"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
+            <input
+              className="border mb-4 p-2 w-full rounded-lg"
+              type="text"
+              placeholder="URL"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
             />
+            <div className="flex-grow pb-16">
+              <ReactQuill
+                theme="snow"
+                modules={modules}
+                value={content}
+                onChange={setContent}
+                className="h-full text-gray-900"
+              />
+            </div>
             <div className="flex justify-end">
               <button
                 onClick={handleClose}

@@ -26,7 +26,7 @@ def get_answer(question):
                 docs: {docs} 
                 question: {question}
                 ###
-                If question is related to greeting, just say "I'm here to help with your coding needs.".
+                If question presents greeting like "hi", "hello", just say "I'm here to help with your coding needs.".
                 Otherwise, answer question based on only the docs. If you don't know, say "I don't know."
                 If question is about cpt code, follow the below format. 
                 “I searched the web. The best answer to your question is CPT code xxxx. Then it should provide the CPT description text."

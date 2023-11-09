@@ -13,6 +13,11 @@ const CreateBlogModal = ({ isOpen, onSubmit, onClose, blog }) => {
   const [url, setUrl] = useState("");
   const [content, setContent] = useState("");
 
+  const removeSpecialCharsAndReplaceSpace = (str) => {
+    // Remove special characters and replace spaces with '-'
+    return str.replace(/[^a-zA-Z0-9 ]/g, "").replace(/\s+/g, "-");
+  };
+
   useEffect(() => {
     if (blog) {
       setTitle(blog.title);
@@ -26,6 +31,11 @@ const CreateBlogModal = ({ isOpen, onSubmit, onClose, blog }) => {
   const handleSubmit = () => {
     onSubmit({ title, url, content });
     removeContent();
+  };
+
+  const changedTitle = (title) => {
+    setTitle(title);
+    setUrl(removeSpecialCharsAndReplaceSpace(title));
   };
 
   const handleClose = () => {
@@ -59,7 +69,7 @@ const CreateBlogModal = ({ isOpen, onSubmit, onClose, blog }) => {
               type="text"
               placeholder="Title"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => changedTitle(e.target.value)}
             />
             <input
               className="border mb-4 p-2 w-full rounded-lg"

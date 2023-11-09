@@ -20,7 +20,6 @@ const BlogList = () => {
       blogs.forEach((blog) => {
         blog["url"] = blog.title.replace(" ", "-");
       });
-      console.log(blogs);
     } catch (error) {
       console.error("Error fetching blogs", error);
     }

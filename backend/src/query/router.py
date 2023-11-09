@@ -2,11 +2,11 @@ from fastapi import APIRouter, Body, Request, Depends
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
+from src.config import DEFAULT_MESSAGE
 from src.database import SessionLocal
 from src.models import Message, FirstQuery
 from src.query.models import UserQuery
 from src.query.services.chatbot import get_answer
-from src.config import DEFAULT_MESSAGE
 
 # set router
 router = APIRouter(prefix="/query", tags=["query"])

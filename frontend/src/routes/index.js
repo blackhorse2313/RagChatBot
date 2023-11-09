@@ -8,6 +8,7 @@ import FirstQuery from "../pages/firstquery";
 import About from "../pages/about";
 import ManageBlog from "../pages/manageblog";
 import ManageAbout from "../pages/manageabout";
+import NotFound from "../pages/notfound";
 
 const AppRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const AppRoutes = () => {
       <Route path="/manageblog10180" element={<ManageBlog />} />
       <Route path="/manageabout10180" element={<ManageAbout />} />
       <Route path="/" element={<Home />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

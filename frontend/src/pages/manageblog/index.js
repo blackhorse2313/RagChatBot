@@ -1,5 +1,5 @@
 import React from "react";
-import BlogTable from "../../components/BlogTable";
+import BlogTable from "./BlogTable";
 
 const ManageBlog = () => {
   return (

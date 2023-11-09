@@ -15,7 +15,6 @@ const BlogDetail = () => {
       const response = await axios.get(
         `${process.env.REACT_APP_SERVER_URL}/blogs/${url}`
       );
-      console.log(response.data);
       setBlog(response.data);
     } catch (error) {
       console.error("Error fetching blogs", error);
@@ -23,7 +22,7 @@ const BlogDetail = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="w-1/2 mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <Link to={`/blog`}>
         <button className="mb-4 bg-indigo-700 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
           Go Back

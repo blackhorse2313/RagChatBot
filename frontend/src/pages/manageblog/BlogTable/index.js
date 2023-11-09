@@ -52,10 +52,9 @@ const BlogTable = () => {
   };
 
   const handleCreateEdit = async (blog) => {
-    if (blog.title == "" || blog.content == "" || blog.url == "") {
-      closeModal();
-      api.error({
-        message: "Please input title and content.",
+    if (blog.title === "" || blog.content === "" || blog.url === "") {
+      api.warning({
+        message: "Please fill out all inputs in the form.",
       });
       return;
     }
@@ -71,7 +70,7 @@ const BlogTable = () => {
       fetchBlogs();
       closeModal();
       api.success({
-        message: "Success",
+        message: "Successfully creating/updated blog.",
       });
     } catch (error) {
       api.error({
@@ -93,7 +92,7 @@ const BlogTable = () => {
       fetchBlogs();
       closeDeleteModal();
       api.success({
-        message: "Success deleting blog.",
+        message: "Successfully deleted blog.",
       });
     } catch (error) {
       api.error({

@@ -21,10 +21,13 @@ def get_answer(question):
     doclist = Pinecone.from_existing_index(index_name=INDEX_NAME, embedding=embeddings)
 
     template = """
+                You are an expert in CPT code and ICD10 code and should help users with related questions.
+    
                 docs: {docs} 
                 question: {question}
                 ###
-                Please answer question based on only the docs. If you don't know, say "I don't know."
+                If question is related to greeting, just answer it.
+                Otherwise, answer question based on only the docs. If you don't know, say "I don't know."
                 If question is about cpt code, follow the below format. 
                 “I searched the web. The best answer to your question is CPT code xxxx. Then it should provide the CPT description text."
             """

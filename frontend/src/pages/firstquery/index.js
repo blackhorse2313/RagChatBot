@@ -1,5 +1,5 @@
 import React from "react";
-import TableWithPagination from "../../components/TableWithPagination";
+import TableWithPagination from "./TableWithPagination";
 
 const FirstQuery = () => {
   return (

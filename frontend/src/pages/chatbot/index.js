@@ -22,7 +22,6 @@ const Chatbot = () => {
       deviceId = uuidv4(); // Generate a new ID
       Cookies.set("device_id", deviceId, { expires: 365 }); // Store it in a cookie that expires in 1 year
     }
-    console.log(deviceId); // Logs the device ID to the console
   }, []);
 
   useEffect(scrollToBottom, [messages]);

@@ -16,31 +16,29 @@ const ManageAbout = () => {
       const response = await axios.get(
         `${process.env.REACT_APP_SERVER_URL}/aboutme/`
       );
-      console.log(response.data);
       setTitle(response.data?.title);
       setContent(response.data?.content);
     } catch (error) {
       console.error("Error fetching aboutme", error);
-      api.error({
-        message: "Error fetching aboutme",
-      });
     }
   };
 
   const handleSubmit = async () => {
+    if (title === "" || content === "") {
+      api.warning({
+        message: "Please fill out all inputs in the form.",
+      });
+      return;
+    }
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/aboutme/`,
-        {
-          title: title,
-          content: content,
-        }
-      );
+      await axios.post(`${process.env.REACT_APP_SERVER_URL}/aboutme/`, {
+        title: title,
+        content: content,
+      });
       api.success({
-        message: "Success updating aboutme",
+        message: "Successfully updated aboutme.",
       });
     } catch (error) {
-      console.error("Error fetching aboutme", error);
       api.error({
         message: "Error fetching aboutme",
       });

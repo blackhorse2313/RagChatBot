@@ -8,7 +8,7 @@ from langchain.vectorstores import Pinecone
 from src.config import *
 
 
-def get_answer(question):
+def get_answer(user_input):
     llm = OpenAI(model_name="gpt-3.5-turbo", temperature=0.0, openai_api_key=OPENAI_API_KEY)
 
     pinecone.init(
@@ -21,27 +21,28 @@ def get_answer(question):
     doclist = Pinecone.from_existing_index(index_name=INDEX_NAME, embedding=embeddings)
 
     template = """
-                You are an expert in CPT code and ICD10 code and should help users with related questions.
-    
                 docs: {docs} 
-                question: {question}
+                user_input: {user_input}
+                
                 ###
-                If above question is "hi" or "hello", just say "I'm here to help with your coding needs.".
-                Otherwise, answer question based on only the docs. If you don't know, say "I don't know."
+                Give me the best answer about user_input based on only the docs.
+                Please don't say non-necessary sentence like "The best answer based on the given docs is .."
+                If you don't know, say "I don't know.". 
+                In case that you don't know and user_input is "hi" or "hello", say "I'm here to help with your coding needs"
                 If question is about cpt code, follow the below format. 
                 “I searched the web. The best answer to your question is CPT code xxxx. Then it should provide the CPT description text."
             """
 
     prompt = PromptTemplate(
-        template=template, input_variables=["docs", "question"]
+        template=template, input_variables=["docs", "user_input"]
     )
 
     llm_chain = LLMChain(prompt=prompt, llm=llm)
 
-    docs = doclist.max_marginal_relevance_search(question, k=3)
+    docs = doclist.max_marginal_relevance_search(user_input, k=3)
     docs = [doc.metadata["answer"] for doc in docs]
 
     print(docs)
 
-    answer = llm_chain.predict(docs=docs, question=question)
+    answer = llm_chain.predict(docs=docs, user_input=user_input)
     return answer

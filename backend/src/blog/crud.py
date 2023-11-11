@@ -1,8 +1,10 @@
 from datetime import datetime
 
+from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from src.blog import models, schemas
+from src.sitemap.router import update_sitemap
 
 
 def get_blog(db: Session, blog_url: str):
@@ -10,7 +12,7 @@ def get_blog(db: Session, blog_url: str):
 
 
 def get_blogs(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Blog).offset(skip).limit(limit).all()
+    return db.query(models.Blog).order_by(desc(models.Blog.updated_at)).offset(skip).limit(limit).all()
 
 
 def create_blog(db: Session, blog: schemas.BlogCreate):
@@ -18,6 +20,8 @@ def create_blog(db: Session, blog: schemas.BlogCreate):
     db.add(db_blog)
     db.commit()
     db.refresh(db_blog)
+
+    update_sitemap(db)
     return db_blog
 
 
@@ -25,6 +29,8 @@ def delete_blog(db: Session, blog_id: int):
     db_blog = db.query(models.Blog).filter(models.Blog.id == blog_id).first()
     db.delete(db_blog)
     db.commit()
+
+    update_sitemap(db)
     return db_blog
 
 
@@ -33,7 +39,8 @@ def update_blog(db: Session, blog_id: int, blog: schemas.BlogUpdate):
     db_blog.title = blog.title
     db_blog.url = blog.url
     db_blog.content = blog.content
-    db_blog.updated_at = datetime.now()
     db.commit()
     db.refresh(db_blog)
+
+    update_sitemap(db)
     return db_blog

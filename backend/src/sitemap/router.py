@@ -4,6 +4,7 @@ from typing import List
 from fastapi import APIRouter, Request, Depends
 from sqlalchemy.orm import Session
 from fastapi.responses import Response
+from starlette.responses import FileResponse
 
 from src.blog import crud, schemas
 from src.database import SessionLocal
@@ -20,8 +21,8 @@ def get_db():
         db.close()
 
 
-@router.get("/sitemap.xml", response_class=Response)
-def send_message(request: Request, db: Session = Depends(get_db)):
+@router.post("/update-sitemap")
+def update_sitemap(db: Session = Depends(get_db)):
     blogs: List[schemas.Blog] = crud.get_blogs(db)
 
     # Create the sitemap
@@ -42,4 +43,11 @@ def send_message(request: Request, db: Session = Depends(get_db)):
     # Convert the sitemap to a string
     sitemap = ET.tostring(urlset, encoding="unicode")
 
-    return Response(content=sitemap, media_type="application/xml")
+    # Save the sitemap to a file
+    with open("sitemap.xml", "w") as f:
+        f.write(sitemap)
+
+
+@router.get("/sitemap.xml")
+async def get_sitemap():
+    return FileResponse('sitemap.xml', media_type='application/xml')

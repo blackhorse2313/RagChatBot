@@ -2,12 +2,15 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
+from starlette.staticfiles import StaticFiles
 
 from routes.api import router
 from src.database import Base, engine
 
 # init FastAPI app
 app = FastAPI()
+
+app.mount("/api/images", StaticFiles(directory="images"), name="images")
 
 origins = [
     "*"

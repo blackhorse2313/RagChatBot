@@ -1,5 +1,8 @@
-from fastapi import Depends, HTTPException, APIRouter
+import shutil
+
+from fastapi import Depends, HTTPException, APIRouter, UploadFile, File
 from sqlalchemy.orm import Session
+from starlette.responses import JSONResponse
 
 from src.blog import crud, schemas
 from src.database import SessionLocal
@@ -49,3 +52,10 @@ def delete_blog(blog_id: int, db: Session = Depends(get_db)):
     if db_blog is None:
         raise HTTPException(status_code=404, detail="Blog not found")
     return db_blog
+
+@router.post("/upload")
+async def upload_image(image: UploadFile = File(...)):
+    with open(f"images/{image.filename}", "wb") as buffer:
+        shutil.copyfileobj(image.file, buffer)
+
+    return JSONResponse(content={"imageUrl": f"images/{image.filename}"})

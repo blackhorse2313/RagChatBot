@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -26,15 +27,13 @@ class BlogList(BaseModel):
     title: str
     url: str
     sub_content: str
-    created_at: datetime
-    updated_at: datetime
+    created_at: Optional[datetime]
+    updated_at: Optional[datetime]
 
 
 # Schema for response
-class Blog(BlogBase):
+class Blog(BlogList, BlogBase):
     id: int
-    created_at: datetime
-    updated_at: datetime
 
     class Config:
         orm_mode = True

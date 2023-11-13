@@ -26,7 +26,9 @@ def create_blog(blog: schemas.BlogCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=list[schemas.BlogList])
 def read_blogs(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    blogs = crud.get_blogs(db, skip=skip, limit=limit)
+    db_blogs = crud.get_blogs(db, skip=skip, limit=limit)
+    blogs = [schemas.BlogList(id=blog.id, title=blog.title, url=blog.url, sub_content=blog.sub_content,
+                              created_at=blog.created_at, updated_at=blog.updated_at) for blog in db_blogs]
     return blogs
 
 

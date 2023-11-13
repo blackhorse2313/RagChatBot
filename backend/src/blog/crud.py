@@ -10,9 +10,7 @@ def get_blog(db: Session, blog_url: str):
 
 
 def get_blogs(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Blog.id, models.Blog.title, models.Blog.url, models.Blog.sub_content, models.Blog.created_at,
-                    models.Blog.updated_at).order_by(
-        desc(models.Blog.updated_at)).offset(skip).limit(limit).all()
+    return db.query(models.Blog).order_by(desc(models.Blog.updated_at)).offset(skip).limit(limit).all()
 
 
 def create_blog(db: Session, blog: schemas.BlogCreate):

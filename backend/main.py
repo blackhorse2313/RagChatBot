@@ -1,4 +1,5 @@
 import uvicorn
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
@@ -9,6 +10,9 @@ from src.database import Base, engine
 
 # init FastAPI app
 app = FastAPI()
+
+# set config with values in env
+load_dotenv()
 
 app.mount("/api/images", StaticFiles(directory="images"), name="images")
 

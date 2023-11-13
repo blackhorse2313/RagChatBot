@@ -24,7 +24,7 @@ def create_blog(blog: schemas.BlogCreate, db: Session = Depends(get_db)):
     return crud.create_blog(db=db, blog=blog)
 
 
-@router.get("/", response_model=list[schemas.Blog])
+@router.get("/", response_model=list[schemas.BlogList])
 def read_blogs(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     blogs = crud.get_blogs(db, skip=skip, limit=limit)
     return blogs
@@ -52,6 +52,7 @@ def delete_blog(blog_id: int, db: Session = Depends(get_db)):
     if db_blog is None:
         raise HTTPException(status_code=404, detail="Blog not found")
     return db_blog
+
 
 @router.post("/upload")
 async def upload_image(image: UploadFile = File(...)):

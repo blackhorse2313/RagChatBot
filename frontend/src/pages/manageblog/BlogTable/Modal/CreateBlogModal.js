@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import axios from "axios";
 
 const modules = {
   toolbar: [
@@ -18,18 +19,36 @@ const CreateBlogModal = ({ isOpen, onSubmit, onClose, blog }) => {
     return str.replace(/[^a-zA-Z0-9 ]/g, "").replace(/\s+/g, "-");
   };
 
+  const fetchBlog = async (url) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/blogs/${url}`
+      );
+      setContent(response.data.content);
+    } catch (error) {
+      console.error("Error fetching blogs", error);
+    }
+  };
+
   useEffect(() => {
     if (blog) {
       setTitle(blog.title);
       setUrl(blog.url);
-      setContent(blog.content);
+      fetchBlog(blog.url);
     } else {
       removeContent();
     }
   }, [blog]);
 
+  const get_subcontent = (str) => {
+    if (str === null || str === "") return false;
+    else str = str.toString();
+    return str.replace(/<[^>]*>/g, "")?.substring(0, 100) + "...";
+  };
+
   const handleSubmit = () => {
-    onSubmit({ title, url, content });
+    const sub_content = get_subcontent(content);
+    onSubmit({ title, url, content, sub_content });
     removeContent();
   };
 

@@ -23,7 +23,8 @@ def get_db():
 
 @router.post("/update-sitemap")
 def update_sitemap(db: Session = Depends(get_db)):
-    blogs: List[schemas.Blog] = crud.get_blogs(db)
+    blogs: List[schemas.BlogList] = crud.get_blogs(db)
+
 
     # Create the sitemap
     urlset = ET.Element("urlset", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")

@@ -37,8 +37,8 @@ const BlogTable = () => {
   };
 
   const closeModal = () => {
-    setModalOpen(false);
     setCurrentBlog(null);
+    setModalOpen(false);
   };
 
   const openDeleteModal = (blog) => {

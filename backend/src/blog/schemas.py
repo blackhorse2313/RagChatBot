@@ -8,6 +8,7 @@ class BlogBase(BaseModel):
     title: str
     url: str
     content: str
+    sub_content: str
 
 
 # Schema for Blog creation
@@ -18,6 +19,15 @@ class BlogCreate(BlogBase):
 # Schema for Blog updates
 class BlogUpdate(BlogBase):
     pass
+
+
+class BlogList(BaseModel):
+    id: int
+    title: str
+    url: str
+    sub_content: str
+    created_at: datetime
+    updated_at: datetime
 
 
 # Schema for response

@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
@@ -12,11 +10,13 @@ def get_blog(db: Session, blog_url: str):
 
 
 def get_blogs(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Blog).order_by(desc(models.Blog.updated_at)).offset(skip).limit(limit).all()
+    return db.query(models.Blog.id, models.Blog.title, models.Blog.url, models.Blog.sub_content, models.Blog.created_at,
+                    models.Blog.updated_at).order_by(
+        desc(models.Blog.updated_at)).offset(skip).limit(limit).all()
 
 
 def create_blog(db: Session, blog: schemas.BlogCreate):
-    db_blog = models.Blog(title=blog.title, content=blog.content, url=blog.url)
+    db_blog = models.Blog(title=blog.title, content=blog.content, url=blog.url, sub_content=blog.sub_content)
     db.add(db_blog)
     db.commit()
     db.refresh(db_blog)

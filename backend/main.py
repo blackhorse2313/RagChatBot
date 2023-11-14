@@ -13,8 +13,7 @@ app = FastAPI()
 app.mount("/api/images", StaticFiles(directory="images"), name="images")
 
 origins = [
-    "https://medicalcodingbot.com",  # Ensure you've listed the correct origins
-    "http://localhost:3000",  # Add the port number if you have a specific one in the development phase
+    "*"
 ]
 
 app.add_middleware(SessionMiddleware, secret_key="medical_coding_bot")
@@ -25,7 +24,6 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["*"]  # Reveal the allowed headers
 )
 
 app.include_router(router)

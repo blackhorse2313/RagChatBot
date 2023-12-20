@@ -9,7 +9,7 @@ from src.config import *
 
 
 def get_answer(user_input):
-    llm = OpenAI(api_key=OPENAI_API_KEY)
+    llm = OpenAI(api_key=OPENAI_API_KEY, model_name="gpt-3.5-turbo")
 
     pinecone.init(
         api_key=PINECONE_KEY,
